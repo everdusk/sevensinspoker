@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seven Sins Poker</title>
+  <meta name="description" content="Texas Hold’em meets a roguelike autobattler. One against four." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0b0e;
+      --bg-2: #12141a;
+      --card: #16181f;
+      --line: #2a2d38;
+      --text: #ece8e0;
+      --muted: #9a948a;
+      --gold: #c5a059;
+      --gold-soft: #e0c48a;
+      --crimson: #8b2e3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 6vw;
+      background: rgba(10, 11, 14, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: Cinzel, serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      list-style: none;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--gold-soft); }
+
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: grid;
+      place-items: end stretch;
+      background:
+        linear-gradient(180deg, rgba(10, 11, 14, 0.25) 0%, rgba(10, 11, 14, 0.55) 45%, var(--bg) 100%),
+        url("images/hero.png") center / cover no-repeat,
+        radial-gradient(1200px 500px at 50% 20%, #3a1a22 0%, var(--bg) 70%);
+    }
+    .hero-inner {
+      width: min(1080px, 88vw);
+      margin: 0 auto 72px;
+      padding-top: 18vh;
+    }
+    .eyebrow {
+      color: var(--gold);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: Cinzel, serif;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+    .lead {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #d4b36c, var(--gold));
+      color: #1a140c;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 13px 22px;
+      border-radius: 4px;
+      box-shadow: 0 8px 24px rgba(197, 160, 89, 0.22);
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
+      margin-left: 10px;
+    }
+
+    section {
+      width: min(1080px, 88vw);
+      margin: 0 auto;
+      padding: 72px 0;
+    }
+    .hero {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      font-family: Cinzel, serif;
+      font-size: 1.7rem;
+      margin-bottom: 22px;
+      color: var(--gold-soft);
+    }
+    .about p { color: var(--muted); margin-bottom: 16px; max-width: 760px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .pill {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    .video-frame {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+    .video-frame iframe,
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+    .video-note {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: #5d5852;
+    }
+
+    .shots {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .shots a {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+    .shots img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .shot-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #8a8378;
+      font-size: 0.85rem;
+      background:
+        linear-gradient(135deg, #24181c, #181a22 55%, #221e18);
+    }
+
+    .steam-box {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 36px;
+      text-align: center;
+    }
+    .steam-box p { color: var(--muted); margin: 10px 0 24px; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 6vw 40px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: #5d5852;
+      font-size: 0.85rem;
+    }
+    footer a { color: #8a8378; }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: none;
+      place-items: center;
+      z-index: 40;
+      padding: 24px;
+    }
+    .lightbox.open { display: grid; }
+    .lightbox img { max-height: 90vh; max-width: 92vw; border-radius: 8px; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .shots { grid-template-columns: 1fr; }
+      .btn-ghost { margin: 12px 0 0; }
+      .hero-inner .btn-ghost { display: inline-flex; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav-logo" href="#top">Seven Sins Poker</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#screenshots">Screenshots</a></li>
+      <li><a href="#steam">Steam</a></li>
+    </ul>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">Roguelike · Poker · Autobattler</p>
+      <h1>Seven Sins Poker</h1>
+      <p class="lead">Texas Hold’em meets a roguelike autobattler where losing costs you health. Face four opponents at once, use abilities to turn the tide of each hand, and time your counters in QTEs. Create your build and defeat the Seven Sins.</p>
+      <a class="btn" href="https://store.steampowered.com/app/5125700/Seven_Sins_Poker/" target="_blank" rel="noopener">Open in Steam</a>
+      <a class="btn btn-ghost" href="#about">About</a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About</h2>
+    <p>At this table, a strong hand is no guarantee you’ll survive the round.
+
+Texas Hold’em hands, autobattler combat, and a roguelike adventure. Choose your route, create your build, and manage your abilities right in the middle of a poker showdown. The decisions you make during each hand matter just as much as your preparation.</p>
+    <p>One against four. Face four opponents at once. If even one of them has a stronger hand, you lose the round and take damage. The other enemies take no damage, even if their hands are weaker than yours. Beating three isn’t enough.</p>
+    <p>Your opponents want you dead, and they don’t have to wait for the showdown.
+
+Keep an eye on their anger and be ready to act. Fireball coming your way? Time your counter and send it flying back. But stay sharp: your enemy can return the favor.
+
+Every hand becomes a flurry of attacks. Pull off QTE combos, deflect incoming blows, and switch between planning your hand and reacting fast. As long as the cards are on the table, the fight is still on.</p>
+    <div class="pills">
+      <span class="pill">Single-player</span>
+      <span class="pill">Indie</span>
+      <span class="pill">Strategy</span>
+      <span class="pill">English / Русский</span>
+    </div>
+  </section>
+
+  <section id="video">
+    <h2>Trailer</h2>
+    <!-- Положите ролик в media/trailer.mp4 или замените src iframe на YouTube embed -->
+    <div class="video-frame">
+      <video controls playsinline poster="images/hero.png">
+        <source src="media/Trailer.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <h2>Screenshots</h2>
+    <div class="shots">
+      <a href="images/screenshot-1.jpg" data-lightbox>
+        <img src="images/screenshot-1.jpg" alt="Screenshot 1" />
+      </a>
+      <a href="images/screenshot-2.jpg" data-lightbox>
+        <img src="images/screenshot-2.jpg" alt="Screenshot 2" />
+      </a>
+      <a href="images/screenshot-3.jpg" data-lightbox>
+        <img src="images/screenshot-3.jpg" alt="Screenshot 3" />
+      </a>
+      <a href="images/screenshot-4.jpg" data-lightbox>
+        <img src="images/screenshot-4.jpg" alt="Screenshot 4" />
+      </a>
+    </div>
+  </section>
+
+  <section id="steam">
+    <div class="steam-box">
+      <h2>Available on Steam</h2>
+      <p>The game is out now. Get your copy on Steam and defeat the Seven Sins!</p>
+      <a class="btn" href="https://store.steampowered.com/app/5125700/Seven_Sins_Poker/" target="_blank" rel="noopener">Seven Sins Poker on Steam</a>
+    </div>
+</section>
+
+<footer style="padding: 40px 20px; text-align: center; color: #666; background-color: #0b0b0c; font-family: sans-serif;">
+    <div style="max-width: 820px; margin: 0 auto; font-size: 12px; line-height: 1.8;">
+        <p style="margin-bottom: 14px;">
+            <strong>18+.</strong> These pages and our games are for adults. They include simulated poker, optional in-app purchases, and age-restricted content. They do not offer real-money gambling, and you cannot win real money or prizes of real-world value. Realist Grand LTD is the data controller. Please read our Terms of Use and Privacy Policy.
+        </p>
+        <div style="margin-bottom: 12px;">
+            <a href="/terms.html" style="color: #8a8378; margin: 0 10px;">Terms of Use</a>
+            <a href="/privacy.html" style="color: #8a8378; margin: 0 10px;">Privacy Policy</a>
+        </div>
+        <div style="font-size: 11px; color: #444;">
+            © Realist Grand LTD | <a href="/" style="color: #444;">realistgrand.com</a>
+        </div>
+    </div>
+</footer>
+
+
+  <div class="lightbox" id="lightbox"></div>
+
+  <script>
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("error", () => {
+        const box = document.createElement("div");
+        box.className = "shot-fallback";
+        box.textContent = img.getAttribute("alt") || "Image";
+        img.replaceWith(box);
+      });
+    });
+
+    const lb = document.getElementById("lightbox");
+    document.querySelectorAll("[data-lightbox]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = link.getAttribute("href");
+        lb.innerHTML = '<img src="' + href + '" alt="">';
+        lb.classList.add("open");
+      });
+    });
+    lb.addEventListener("click", () => lb.classList.remove("open"));
+  </script>
+</body>
+</html>
